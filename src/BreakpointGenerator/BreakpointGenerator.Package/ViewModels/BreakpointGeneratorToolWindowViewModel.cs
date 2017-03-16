@@ -14,9 +14,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
     {
         private static readonly BreakpointGeneratorToolWindowViewModel _instance = new BreakpointGeneratorToolWindowViewModel();
 
-
-        private ObservableCollection<TreeViewModel> tree = new ObservableCollection<TreeViewModel>();
-        private Visibility isLoading;
+        private ObservableCollection<TreeViewModel> _tree = new ObservableCollection<TreeViewModel>();
+        private Visibility _isLoading;
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
@@ -76,20 +75,20 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
 
         public ObservableCollection<TreeViewModel> Tree
         {
-            get { return tree; }
+            get { return _tree; }
             set
             {
-                tree = value;
+                _tree = value;
                 OnPropertyChanged();
             }
         }
 
         public Visibility IsLoading
         {
-            get { return isLoading; }
+            get { return _isLoading; }
             set
             {
-                isLoading = value;
+                _isLoading = value;
                 OnPropertyChanged();
             }
         }
