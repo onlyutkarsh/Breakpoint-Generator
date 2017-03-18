@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24706.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D2D6486-DBF4-42BB-84F4-B598B0785C4D}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreakpointGenerator.Package", "BreakpointGenerator.Package\BreakpointGenerator.Package.csproj", "{7EF657BE-4E5F-4A00-9F6B-9B394E4D0EB9}"
 EndProject
@@ -43,23 +47,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://almrangers.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = BreakpointGenerator.Analyzer\\BreakpointGenerator.Analyzer.csproj
-		SccProjectName1 = BreakpointGenerator.Analyzer
-		SccLocalPath1 = BreakpointGenerator.Analyzer
-		SccProjectUniqueName2 = BreakpointGenerator.Analyzer.Test\\BreakpointGenerator.Analyzer.Test.csproj
-		SccProjectName2 = BreakpointGenerator.Analyzer.Test
-		SccLocalPath2 = BreakpointGenerator.Analyzer.Test
-		SccProjectUniqueName3 = BreakpointGenerator.Package\\BreakpointGenerator.Package.csproj
-		SccProjectName3 = BreakpointGenerator.Package
-		SccLocalPath3 = BreakpointGenerator.Package
-		SccProjectUniqueName4 = BreakpointGenerator.Common\\BreakpointGenerator.Common.csproj
-		SccProjectName4 = BreakpointGenerator.Common
-		SccLocalPath4 = BreakpointGenerator.Common
 	EndGlobalSection
 EndGlobal

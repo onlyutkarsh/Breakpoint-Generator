@@ -5,7 +5,7 @@
     xmlns:common="clr-namespace:Microsoft.ALMRangers.BreakpointGenerator.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+    xmlns:shell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.14.0"
     Name="MyToolWindow"
     Background="{DynamicResource VsBrush.Window}"
     Foreground="{DynamicResource VsBrush.WindowText}"
