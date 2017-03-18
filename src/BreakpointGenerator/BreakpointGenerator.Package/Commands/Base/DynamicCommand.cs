@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Design;
-using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.ALMRangers.BreakpointGenerator.Extensions;
 
@@ -9,7 +8,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands.Base
     public abstract class DynamicCommand : OleMenuCommand
     {
         private static IServiceProvider _serviceProvider;
-        private static DTE _dte;
         private static BreakpointGeneratorPackage _beakpointGeneratorPackage;
 
         /// <summary>
