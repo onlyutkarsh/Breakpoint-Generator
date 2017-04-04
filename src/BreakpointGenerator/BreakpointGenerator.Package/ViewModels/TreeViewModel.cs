@@ -1,11 +1,24 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="TreeViewModel.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  A Model class to hold the tree structure.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Microsoft.ALMRangers.BreakpointGenerator.Analyzer;
-using Microsoft.ALMRangers.BreakpointGenerator.Common;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft.ALMRangers.BreakpointGenerator.Analyzer;
+using Microsoft.ALMRangers.BreakpointGenerator.Common;
 using Microsoft.ALMRangers.BreakpointGenerator.ViewModels.Base;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
@@ -14,22 +27,27 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
     {
         private readonly DTE dte;
         bool? isChecked = false;
-        public TreeViewModel Parent { get; set; }
-        public List<TreeViewModel> Children { get; set; }
-
-        public bool IsInitiallySelected { get; private set; }
-        RelayCommand onInsertBreakpoint;
         private bool isExpanded;
+        RelayCommand onInsertBreakpoint;
 
-        public TreeNode Node { get; set; }
         public TreeViewModel(DTE dte, TreeNode node)
         {
             this.dte = dte;
             Node = node;
             this.Children = new List<TreeViewModel>();
-
-
         }
+
+        public TreeViewModel()
+        {
+            Children = new List<TreeViewModel>();
+        }
+
+        public TreeViewModel Parent { get; set; }
+        public List<TreeViewModel> Children { get; set; }
+
+        public bool IsInitiallySelected { get; private set; }
+
+        public TreeNode Node { get; set; }
 
         public bool CanBreakpointBeInserted
         {
@@ -49,25 +67,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
             }
         }
 
-        private void BreakpointInserted()
-        {
-
-        }
-
-
-        public TreeViewModel AddChild(TreeNode node)
-        {
-            TreeViewModel childNode = new TreeViewModel(dte, node) { Parent = this };
-            this.Children.Add(childNode);
-            return childNode;
-        }
-
         public BitmapSource Icon { get; set; }
-
-        public TreeViewModel()
-        {
-            Children = new List<TreeViewModel>();
-        }
 
         /// <summary>
         /// Gets/sets the state of the associated UI toggle (ex. CheckBox).
@@ -92,6 +92,18 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
             }
         }
 
+        private void BreakpointInserted()
+        {
+        }
+
+
+        public TreeViewModel AddChild(TreeNode node)
+        {
+            TreeViewModel childNode = new TreeViewModel(dte, node) {Parent = this};
+            this.Children.Add(childNode);
+            return childNode;
+        }
+
         private void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
             if (value == isChecked)
@@ -104,7 +116,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
                 var method = Node as PublicMethodNode;
                 Debugger debugger = dte.Debugger;
 
-                if(method.Breakpoint == null)
+                if (method.Breakpoint == null)
                 {
                     var nrBreakpoints = debugger.Breakpoints.Count;
                     debugger.Breakpoints.Add("", method.FilePath, method.LineNo, 1, "",
@@ -125,7 +137,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
                     {
                     }
                     method.Breakpoint = null;
-                }   
+                }
             }
 
             if (updateChildren && isChecked.HasValue)
@@ -133,7 +145,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
 
             if (updateParent && Parent != null)
                 Parent.VerifyCheckState();
-
 
 
             OnPropertyChanged("IsChecked");

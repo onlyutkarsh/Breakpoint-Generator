@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="DteInitializer.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  A utility class to initialize Dte.
+// // </summary>
+// //———————————————————————
+
+using System;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -28,9 +41,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             int hr;
             bool isZombie;
 
-            if (propid == (int)__VSSPROPID.VSSPROPID_Zombie)
+            if (propid == (int) __VSSPROPID.VSSPROPID_Zombie)
             {
-                isZombie = (bool)var;
+                isZombie = (bool) var;
 
                 if (!isZombie)
                 {

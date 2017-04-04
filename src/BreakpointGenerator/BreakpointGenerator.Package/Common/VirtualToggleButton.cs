@@ -1,4 +1,16 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="VirtualToggleButton.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// // A utility class
+// // </summary>
+// //———————————————————————
+
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -7,33 +19,44 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 {
     public static class VirtualToggleButton
     {
-        #region attached properties
-
-        #region IsChecked
-
         /// <summary>
         /// IsChecked Attached Dependency Property
         /// </summary>
         public static readonly DependencyProperty IsCheckedProperty =
-            DependencyProperty.RegisterAttached("IsChecked", typeof(Nullable<bool>), typeof(VirtualToggleButton),
-                new FrameworkPropertyMetadata((Nullable<bool>)false,
+            DependencyProperty.RegisterAttached("IsChecked", typeof(bool?), typeof(VirtualToggleButton),
+                new FrameworkPropertyMetadata((bool?) false,
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.Journal,
                     new PropertyChangedCallback(OnIsCheckedChanged)));
+
+        /// <summary>
+        /// IsThreeState Attached Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty IsThreeStateProperty =
+            DependencyProperty.RegisterAttached("IsThreeState", typeof(bool), typeof(VirtualToggleButton),
+                new FrameworkPropertyMetadata((bool) false));
+
+        /// <summary>
+        /// IsVirtualToggleButton Attached Dependency Property
+        /// </summary>
+        public static readonly DependencyProperty IsVirtualToggleButtonProperty =
+            DependencyProperty.RegisterAttached("IsVirtualToggleButton", typeof(bool), typeof(VirtualToggleButton),
+                new FrameworkPropertyMetadata((bool) false,
+                    new PropertyChangedCallback(OnIsVirtualToggleButtonChanged)));
 
         /// <summary>
         /// Gets the IsChecked property.  This dependency property 
         /// indicates whether the toggle button is checked.
         /// </summary>
-        public static Nullable<bool> GetIsChecked(DependencyObject d)
+        public static bool? GetIsChecked(DependencyObject d)
         {
-            return (Nullable<bool>)d.GetValue(IsCheckedProperty);
+            return (bool?) d.GetValue(IsCheckedProperty);
         }
 
         /// <summary>
         /// Sets the IsChecked property.  This dependency property 
         /// indicates whether the toggle button is checked.
         /// </summary>
-        public static void SetIsChecked(DependencyObject d, Nullable<bool> value)
+        public static void SetIsChecked(DependencyObject d, bool? value)
         {
             d.SetValue(IsCheckedProperty, value);
         }
@@ -46,7 +69,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             UIElement pseudobutton = d as UIElement;
             if (pseudobutton != null)
             {
-                Nullable<bool> newValue = (Nullable<bool>)e.NewValue;
+                bool? newValue = (bool?) e.NewValue;
                 if (newValue == true)
                 {
                     RaiseCheckedEvent(pseudobutton);
@@ -62,17 +85,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             }
         }
 
-        #endregion
-
-        #region IsThreeState
-
-        /// <summary>
-        /// IsThreeState Attached Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty IsThreeStateProperty =
-            DependencyProperty.RegisterAttached("IsThreeState", typeof(bool), typeof(VirtualToggleButton),
-                new FrameworkPropertyMetadata((bool)false));
-
         /// <summary>
         /// Gets the IsThreeState property.  This dependency property 
         /// indicates whether the control supports two or three states.  
@@ -80,7 +92,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// </summary>
         public static bool GetIsThreeState(DependencyObject d)
         {
-            return (bool)d.GetValue(IsThreeStateProperty);
+            return (bool) d.GetValue(IsThreeStateProperty);
         }
 
         /// <summary>
@@ -93,18 +105,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             d.SetValue(IsThreeStateProperty, value);
         }
 
-        #endregion
-
-        #region IsVirtualToggleButton
-
-        /// <summary>
-        /// IsVirtualToggleButton Attached Dependency Property
-        /// </summary>
-        public static readonly DependencyProperty IsVirtualToggleButtonProperty =
-            DependencyProperty.RegisterAttached("IsVirtualToggleButton", typeof(bool), typeof(VirtualToggleButton),
-                new FrameworkPropertyMetadata((bool)false,
-                    new PropertyChangedCallback(OnIsVirtualToggleButtonChanged)));
-
         /// <summary>
         /// Gets the IsVirtualToggleButton property.  This dependency property 
         /// indicates whether the object to which the property is attached is treated as a VirtualToggleButton.  
@@ -112,7 +112,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// </summary>
         public static bool GetIsVirtualToggleButton(DependencyObject d)
         {
-            return (bool)d.GetValue(IsVirtualToggleButtonProperty);
+            return (bool) d.GetValue(IsVirtualToggleButtonProperty);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             IInputElement element = d as IInputElement;
             if (element != null)
             {
-                if ((bool)e.NewValue)
+                if ((bool) e.NewValue)
                 {
                     element.MouseLeftButtonDown += OnMouseLeftButtonDown;
                     element.KeyDown += OnKeyDown;
@@ -145,14 +145,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
                 }
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region routed events
-
-        #region Checked
 
         /// <summary>
         /// A static helper method to raise the Checked event on a target element.
@@ -168,10 +160,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             return args;
         }
 
-        #endregion
-
-        #region Unchecked
-
         /// <summary>
         /// A static helper method to raise the Unchecked event on a target element.
         /// </summary>
@@ -186,10 +174,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             return args;
         }
 
-        #endregion
-
-        #region Indeterminate
-
         /// <summary>
         /// A static helper method to raise the Indeterminate event on a target element.
         /// </summary>
@@ -203,12 +187,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             RaiseEvent(target, args);
             return args;
         }
-
-        #endregion
-
-        #endregion
-
-        #region private methods
 
         private static void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -227,9 +205,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 
                     UpdateIsChecked(sender as DependencyObject);
                     e.Handled = true;
-
                 }
-                else if (e.Key == Key.Enter && (bool)(sender as DependencyObject).GetValue(KeyboardNavigation.AcceptsReturnProperty))
+                else if (e.Key == Key.Enter &&
+                         (bool) (sender as DependencyObject).GetValue(KeyboardNavigation.AcceptsReturnProperty))
                 {
                     UpdateIsChecked(sender as DependencyObject);
                     e.Handled = true;
@@ -239,10 +217,10 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 
         private static void UpdateIsChecked(DependencyObject d)
         {
-            Nullable<bool> isChecked = GetIsChecked(d);
+            bool? isChecked = GetIsChecked(d);
             if (isChecked == true)
             {
-                SetIsChecked(d, GetIsThreeState(d) ? (Nullable<bool>)null : (Nullable<bool>)false);
+                SetIsChecked(d, GetIsThreeState(d) ? (bool?) null : (bool?) false);
             }
             else
             {
@@ -261,7 +239,5 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
                 (target as ContentElement).RaiseEvent(args);
             }
         }
-
-        #endregion
     }
 }

@@ -1,9 +1,22 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="BreakpointGeneratorToolWindowViewModel.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  A View model class for Toolwindow.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.ALMRangers.BreakpointGenerator.Analyzer;
 using EnvDTE;
+using Microsoft.ALMRangers.BreakpointGenerator.Analyzer;
 using Microsoft.ALMRangers.BreakpointGenerator.Common;
 using Microsoft.ALMRangers.BreakpointGenerator.ViewModels.Base;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -12,16 +25,19 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
 {
     public class BreakpointGeneratorToolWindowViewModel : ViewModelBase
     {
-        private static readonly BreakpointGeneratorToolWindowViewModel _instance = new BreakpointGeneratorToolWindowViewModel();
+        private static readonly BreakpointGeneratorToolWindowViewModel _instance =
+            new BreakpointGeneratorToolWindowViewModel();
+
+        private Visibility _isLoading;
 
         private ObservableCollection<TreeViewModel> _tree = new ObservableCollection<TreeViewModel>();
-        private Visibility _isLoading;
 
         // Explicit static constructor to tell C# compiler
         // not to mark type as beforefieldinit
         static BreakpointGeneratorToolWindowViewModel()
         {
         }
+
         private BreakpointGeneratorToolWindowViewModel()
         {
         }
@@ -31,46 +47,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
             get { return _instance; }
         }
 
-        public void ExpandExecute()
-        {
-            foreach (var node in Tree)
-            {
-                Expand(node);
-            }
-        }
-
-        private void Expand(TreeViewModel node)
-        {
-            foreach (var child in node.Children)
-            {
-                Expand(child);
-            }
-            node.IsExpanded = true;
-
-        }
-
         private bool CanExecute
         {
             get { return true; }
-        }
-
-
-        public void CollapseExecute()
-        {
-            foreach (var node in Tree)
-            {
-                Collapse(node);
-            }
-        }
-
-        private void Collapse(TreeViewModel node)
-        {
-            foreach (var child in node.Children)
-            {
-                Collapse(child);
-            }
-            node.IsExpanded = false;
-
         }
 
         public ObservableCollection<TreeViewModel> Tree
@@ -91,6 +70,41 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
                 _isLoading = value;
                 OnPropertyChanged();
             }
+        }
+
+        public void ExpandExecute()
+        {
+            foreach (var node in Tree)
+            {
+                Expand(node);
+            }
+        }
+
+        private void Expand(TreeViewModel node)
+        {
+            foreach (var child in node.Children)
+            {
+                Expand(child);
+            }
+            node.IsExpanded = true;
+        }
+
+
+        public void CollapseExecute()
+        {
+            foreach (var node in Tree)
+            {
+                Collapse(node);
+            }
+        }
+
+        private void Collapse(TreeViewModel node)
+        {
+            foreach (var child in node.Children)
+            {
+                Collapse(child);
+            }
+            node.IsExpanded = false;
         }
 
         public void Initialize()
@@ -131,11 +145,10 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
             CastToTreeViewModel(publicMethods, treeviewModel);
             if (publicMethods.Children.Count > 0)
             {
-                Tree = new ObservableCollection<TreeViewModel> { treeviewModel };
+                Tree = new ObservableCollection<TreeViewModel> {treeviewModel};
             }
-            
-            IsLoading = Visibility.Collapsed;
 
+            IsLoading = Visibility.Collapsed;
         }
 
         public void AnalyzeSolution(DTE dte, string solutionPath)
@@ -154,7 +167,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels
                     treeviewModel.IsExpanded = true;
                     if (publicMethods.Children.Count > 0)
                     {
-                        Tree = new ObservableCollection<TreeViewModel> { treeviewModel };
+                        Tree = new ObservableCollection<TreeViewModel> {treeviewModel};
                     }
                     IsLoading = Visibility.Collapsed;
                 }));

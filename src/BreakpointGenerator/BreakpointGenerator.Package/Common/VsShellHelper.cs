@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="VsShellHelper.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// // A helper class to iterate with Hierarchy items.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,7 +23,6 @@ using Microsoft.VisualStudio.Imaging.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using VSLangProj;
-using ProjectItem = EnvDTE.ProjectItem;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 {
@@ -18,71 +30,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
     {
         private static DTE _dte;
 
-        public static BitmapSource GetIcon(ItemType itemType)
-        {
-            var imageService = (IVsImageService2)Package.GetGlobalService(typeof(SVsImageService));
-
-            ImageAttributes imageAttributes = new ImageAttributes();
-            imageAttributes.Flags = (uint)_ImageAttributesFlags.IAF_RequiredFlags;
-            imageAttributes.ImageType = (uint)_UIImageType.IT_Bitmap;
-            imageAttributes.Format = (uint)_UIDataFormat.DF_WPF;
-            imageAttributes.LogicalHeight = 16;
-            imageAttributes.LogicalWidth = 16;
-            imageAttributes.StructSize = Marshal.SizeOf(typeof(ImageAttributes));
-
-            // Replace this KnownMoniker with your desired ImageMoniker
-            IVsUIObject imageObject = imageService.GetImage(KnownMonikers.Blank, imageAttributes);
-
-            switch (itemType)
-            {
-                case ItemType.Solution:
-                    {
-                        imageObject = imageService.GetImage(KnownMonikers.Solution, imageAttributes);
-                        break;
-                    }
-                case ItemType.Project:
-                    {
-                        imageObject = imageService.GetImage(KnownMonikers.CSProjectNode, imageAttributes);
-                        break;
-                    }
-                case ItemType.File:
-                    {
-                        imageObject = imageService.GetImage(KnownMonikers.CSFileNode, imageAttributes);
-                        break;
-                    }
-                case ItemType.Method:
-                    {
-                        imageObject = imageService.GetImage(KnownMonikers.MethodPublic, imageAttributes);
-                        break;
-                    }
-            }
-            Object data;
-            imageObject.get_Data(out data);
-            return data as BitmapSource;
-        }
-
-        public static IVsHierarchy GetSelectedHierarchy()
-        {
-            IntPtr ptr;
-            IntPtr ptr2;
-            uint num;
-            IVsMultiItemSelect select;
-            IVsHierarchy hierarchy = null;
-
-            IVsMonitorSelection selection = Package.GetGlobalService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
-
-            if (selection.GetCurrentSelection(out ptr, out num, out select, out ptr2) == 0)
-            {
-                if (ptr != IntPtr.Zero)
-                {
-                    hierarchy = Marshal.GetObjectForIUnknown(ptr) as IVsHierarchy;
-
-                    Marshal.Release(ptr);
-                }
-            }
-
-            return hierarchy;
-        }
+        private static UIHierarchy solutionExplorer;
 
         public static DTE Dte
         {
@@ -97,19 +45,84 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             }
         }
 
-        private static UIHierarchy solutionExplorer;
-
         public static UIHierarchy SolutionExplorer
         {
             get
             {
                 if (solutionExplorer == null)
                 {
-                    solutionExplorer = ((DTE2)Dte).ToolWindows.SolutionExplorer;
+                    solutionExplorer = ((DTE2) Dte).ToolWindows.SolutionExplorer;
                 }
 
                 return solutionExplorer;
             }
+        }
+
+        public static BitmapSource GetIcon(ItemType itemType)
+        {
+            var imageService = (IVsImageService2) Package.GetGlobalService(typeof(SVsImageService));
+
+            ImageAttributes imageAttributes = new ImageAttributes();
+            imageAttributes.Flags = (uint) _ImageAttributesFlags.IAF_RequiredFlags;
+            imageAttributes.ImageType = (uint) _UIImageType.IT_Bitmap;
+            imageAttributes.Format = (uint) _UIDataFormat.DF_WPF;
+            imageAttributes.LogicalHeight = 16;
+            imageAttributes.LogicalWidth = 16;
+            imageAttributes.StructSize = Marshal.SizeOf(typeof(ImageAttributes));
+
+            // Replace this KnownMoniker with your desired ImageMoniker
+            IVsUIObject imageObject = imageService.GetImage(KnownMonikers.Blank, imageAttributes);
+
+            switch (itemType)
+            {
+                case ItemType.Solution:
+                {
+                    imageObject = imageService.GetImage(KnownMonikers.Solution, imageAttributes);
+                    break;
+                }
+                case ItemType.Project:
+                {
+                    imageObject = imageService.GetImage(KnownMonikers.CSProjectNode, imageAttributes);
+                    break;
+                }
+                case ItemType.File:
+                {
+                    imageObject = imageService.GetImage(KnownMonikers.CSFileNode, imageAttributes);
+                    break;
+                }
+                case ItemType.Method:
+                {
+                    imageObject = imageService.GetImage(KnownMonikers.MethodPublic, imageAttributes);
+                    break;
+                }
+            }
+            Object data;
+            imageObject.get_Data(out data);
+            return data as BitmapSource;
+        }
+
+        public static IVsHierarchy GetSelectedHierarchy()
+        {
+            IntPtr ptr;
+            IntPtr ptr2;
+            uint num;
+            IVsMultiItemSelect select;
+            IVsHierarchy hierarchy = null;
+
+            IVsMonitorSelection selection =
+                Package.GetGlobalService(typeof(IVsMonitorSelection)) as IVsMonitorSelection;
+
+            if (selection.GetCurrentSelection(out ptr, out num, out select, out ptr2) == 0)
+            {
+                if (ptr != IntPtr.Zero)
+                {
+                    hierarchy = Marshal.GetObjectForIUnknown(ptr) as IVsHierarchy;
+
+                    Marshal.Release(ptr);
+                }
+            }
+
+            return hierarchy;
         }
 
         public static UIHierarchyItem GetSelectedUIHierarchy()
@@ -138,7 +151,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 
             return ((project != null && project.Kind == ProjectKinds.vsProjectKindSolutionFolder) ||
                     (projectItem != null && projectItem.Object is Project &&
-                        ((Project)projectItem.Object).Kind == ProjectKinds.vsProjectKindSolutionFolder));
+                     ((Project) projectItem.Object).Kind == ProjectKinds.vsProjectKindSolutionFolder));
         }
 
         /// <summary>
@@ -155,7 +168,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
 
             return ((project != null && project.Kind != ProjectKinds.vsProjectKindSolutionFolder) ||
                     (projectItem != null && projectItem.Object is Project &&
-                        ((Project)projectItem.Object).Kind != ProjectKinds.vsProjectKindSolutionFolder));
+                     ((Project) projectItem.Object).Kind != ProjectKinds.vsProjectKindSolutionFolder));
         }
 
         public static bool IsCSharpFile(UIHierarchyItem item)
@@ -178,11 +191,13 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         {
             var projects =
                 new UIHierarchyItemIterator(root)
-                .Where(item =>
-                    (item.Object is Project && ((Project)item.Object).Kind != ProjectKinds.vsProjectKindSolutionFolder) ||
-                    (item.Object is ProjectItem && ((ProjectItem)item.Object).Object is Project &&
-                        ((Project)((ProjectItem)item.Object).Object).Kind != ProjectKinds.vsProjectKindSolutionFolder))
-                 .Select(item => (UIHierarchyItem)item);
+                    .Where(item =>
+                        (item.Object is Project && ((Project) item.Object).Kind !=
+                         ProjectKinds.vsProjectKindSolutionFolder) ||
+                        (item.Object is ProjectItem && ((ProjectItem) item.Object).Object is Project &&
+                         ((Project) ((ProjectItem) item.Object).Object).Kind !=
+                         ProjectKinds.vsProjectKindSolutionFolder))
+                    .Select(item => (UIHierarchyItem) item);
 
             return projects;
         }
@@ -195,7 +210,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
                 if (item.ContainingProject.Kind == PrjKind.prjKindCSharpProject)
                 {
                     //Available only for C# projects and C# files
-                    if (item.FileCodeModel != null && item.FileCodeModel.Language == EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp)
+                    if (item.FileCodeModel != null && item.FileCodeModel.Language ==
+                        EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp)
                     {
                         return true;
                     }

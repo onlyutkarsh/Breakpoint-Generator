@@ -1,16 +1,29 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="CommandSet.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  A class to maintain and register all the exposed commmands in this extension.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.ComponentModel.Design;
 using Microsoft.ALMRangers.BreakpointGenerator.Commands;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.ALMRangers.BreakpointGenerator.Extensions;
 using Microsoft.ALMRangers.BreakpointGenerator.Services;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator
 {
     internal class CommandSet
     {
-        private readonly IServiceProvider serviceProvider;
         readonly OleMenuCommandService menuCommandService;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandSet"/> class.
@@ -39,7 +52,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator
             menuCommandService.AddCommand(breakpointGeneratorCommand);
             commandManager.RegisterCommand(breakpointGeneratorCommand);
 
-            OleMenuCommand breakpointGeneratorViaDebugCommand = new ShowBreakpointGeneratorViaDebugCommand(serviceProvider);
+            OleMenuCommand breakpointGeneratorViaDebugCommand =
+                new ShowBreakpointGeneratorViaDebugCommand(serviceProvider);
             menuCommandService.AddCommand(breakpointGeneratorViaDebugCommand);
             commandManager.RegisterCommand(breakpointGeneratorViaDebugCommand);
 

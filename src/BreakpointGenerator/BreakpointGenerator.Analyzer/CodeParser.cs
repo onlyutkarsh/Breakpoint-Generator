@@ -1,4 +1,17 @@
-﻿using System.IO;
+﻿// //———————————————————————
+// // <copyright file="CodeParser.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  A code parsers - parses the code and identifies various class constructs.
+// // </summary>
+// //———————————————————————
+
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.ALMRangers.BreakpointGenerator.Common;
@@ -46,7 +59,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer
                 foreach (var m in c.GetPublicEntryPoints())
                 {
                     foundPublicMethods = true;
-                    file.AddChild(new PublicMethodNode(m, document.FilePath),ItemType.Method);
+                    file.AddChild(new PublicMethodNode(m, document.FilePath), ItemType.Method);
                 }
             }
             if (foundPublicMethods)
