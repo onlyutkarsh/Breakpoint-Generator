@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="RelayCommand.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  ICommand implementation for MVVM.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Diagnostics;
 using System.Windows.Input;
 
@@ -6,17 +19,11 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels.Base
 {
     public class RelayCommand : ICommand
     {
-        #region Fields
-
-        readonly Action<object> _execute;
         readonly Predicate<object> _canExecute;
-
-        #endregion // Fields
-
-        #region Constructors
+        readonly Action<object> _execute;
 
         public RelayCommand(Action<object> execute)
-        : this(execute, null)
+            : this(execute, null)
         {
         }
 
@@ -28,9 +35,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels.Base
             _execute = execute;
             _canExecute = canExecute;
         }
-        #endregion // Constructors
-
-        #region ICommand Members
 
         [DebuggerStepThrough]
         public bool CanExecute(object parameter)
@@ -48,7 +52,5 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.ViewModels.Base
         {
             _execute(parameter);
         }
-
-        #endregion // ICommand Members
     }
 }

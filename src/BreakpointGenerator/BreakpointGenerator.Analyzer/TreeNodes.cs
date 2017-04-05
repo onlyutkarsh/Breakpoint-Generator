@@ -1,11 +1,24 @@
-﻿using Microsoft.ALMRangers.BreakpointGenerator.Common;
+﻿// //———————————————————————
+// // <copyright file="TreeNodes.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  Utility class to hold different types of node in the tree structure.
+// // </summary>
+// //———————————————————————
+
 using EnvDTE80;
+using Microsoft.ALMRangers.BreakpointGenerator.Common;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer
 {
     public abstract class TreeNode
     {
-        public abstract string DisplayName { get;}
+        public abstract string DisplayName { get; }
 
         public abstract ItemType ItemType { get; }
     }
@@ -69,6 +82,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer
             get { return ItemType.File; }
         }
     }
+
     public class PublicMethodNode : TreeNode
     {
         public PublicMethodNode(EntryPoint m, string filePath)
@@ -82,6 +96,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer
         {
             get { return Name; }
         }
+
         public override ItemType ItemType
         {
             get { return ItemType.Method; }

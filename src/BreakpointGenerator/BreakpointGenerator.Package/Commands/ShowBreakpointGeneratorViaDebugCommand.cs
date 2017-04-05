@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="ShowBreakpointGeneratorViaDebugCommand.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  The menu command for "Show Breakpoint Generator" in Debug menu.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using EnvDTE;
@@ -16,7 +29,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
     public class ShowBreakpointGeneratorViaDebugCommand : DynamicCommand
     {
         public ShowBreakpointGeneratorViaDebugCommand(IServiceProvider serviceProvider) :
-            base(serviceProvider, OnExecute, new CommandID(PackageGuids.guidShowBreakpointGeneratorToolWindowCommand, (int)PackageIds.cmdidBreakpointGeneratorDebugMenu))
+            base(serviceProvider, OnExecute,
+                new CommandID(PackageGuids.guidShowBreakpointGeneratorToolWindowCommand,
+                    (int) PackageIds.cmdidBreakpointGeneratorDebugMenu))
         {
         }
 
@@ -34,7 +49,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
                 var projectItem = VsShellHelper.Dte.SelectedItems.Item(1).ProjectItem;
                 if (projectItem != null)
                 {
-
                     //Executed at the folder level / item level
                     if (projectItem.FileCodeModel != null &&
                         projectItem.FileCodeModel.Language == CodeModelLanguageConstants.vsCMLanguageCSharp)
@@ -69,6 +83,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
 
             return false;
         }
+
         private static void OnExecute(object sender, EventArgs e)
         {
             ToolWindowPane window = BreakpointGeneratorPackage.BreakpointGeneratorToolWindow;
@@ -77,7 +92,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
                 throw new COMException("Cannot create toolwindow");
             }
 
-            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            IVsWindowFrame windowFrame = (IVsWindowFrame) window.Frame;
             ErrorHandler.ThrowOnFailure(windowFrame.Show());
             var viewModel = BreakpointGeneratorToolWindowViewModel.Instance;
 

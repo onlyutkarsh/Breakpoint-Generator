@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="IntegrationTests.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  Some basic unit tests
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.ALMRangers.BreakpointGenerator.Common;
@@ -19,7 +32,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer.Test
         [TestMethod]
         public async Task ParseSolution()
         {
-            var tree = await CodeParser.GetPublicMethodsFromSolution(@"C:\Users\jakobe\Source\Repos\NewRepo4\WebApplication1\WebApplication1.sln");
+            var tree =
+                await CodeParser.GetPublicMethodsFromSolution(
+                    @"C:\Users\jakobe\Source\Repos\NewRepo4\WebApplication1\WebApplication1.sln");
             Console.WriteLine("****************************Traversing tree*********************************");
             _treeviewModel = new TreeViewModel(tree.Node);
             BuildTree(tree, _treeviewModel);
@@ -28,7 +43,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer.Test
         [TestMethod]
         public async Task ParseFile()
         {
-            var projectPath = @"C:\Users\jakobe\Source\Repos\NewRepo4\WebApplication1\ClassLibrary1\ClassLibrary1.csproj";
+            var projectPath =
+                @"C:\Users\jakobe\Source\Repos\NewRepo4\WebApplication1\ClassLibrary1\ClassLibrary1.csproj";
             var filePath = @"C:\Users\jakobe\Source\Repos\NewRepo4\WebApplication1\ClassLibrary1\Class2.cs";
             Tree<TreeNode> tree = await CodeParser.GetPublicMethodsFromFile(projectPath, filePath);
             Console.WriteLine("****************************Traversing tree*********************************");
@@ -53,25 +69,19 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer.Test
     public class TreeViewModel
     {
         bool? _isChecked = false;
-        public TreeViewModel Parent { get; set; }
-        public List<TreeViewModel> Children { get; set; }
 
-        public bool IsInitiallySelected { get; private set; }
-
-        public TreeNode Text { get; set; }
         public TreeViewModel(TreeNode text)
         {
             Text = text;
             this.Children = new List<TreeViewModel>();
         }
 
+        public TreeViewModel Parent { get; set; }
+        public List<TreeViewModel> Children { get; set; }
 
-        public TreeViewModel AddChild(TreeNode text)
-        {
-            TreeViewModel childNode = new TreeViewModel(text) { Parent = this };
-            this.Children.Add(childNode);
-            return childNode;
-        }
+        public bool IsInitiallySelected { get; private set; }
+
+        public TreeNode Text { get; set; }
 
         //public void Initialize()
         //{
@@ -95,6 +105,14 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer.Test
             set { SetIsChecked(value, true, true); }
         }
 
+
+        public TreeViewModel AddChild(TreeNode text)
+        {
+            TreeViewModel childNode = new TreeViewModel(text) {Parent = this};
+            this.Children.Add(childNode);
+            return childNode;
+        }
+
         void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
             if (value == _isChecked)
@@ -107,7 +125,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Analyzer.Test
 
             if (updateParent && Parent != null)
                 Parent.VerifyCheckState();
-
         }
 
         void VerifyCheckState()

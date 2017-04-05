@@ -1,4 +1,17 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="CommonExtensions.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  The common extension methods.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
@@ -39,7 +52,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <param name="callback">Callback method adding the service to the container.</param>
         // --------------------------------------------------------------------------------------------
         public static void AddService<TService>(this IServiceContainer container,
-          ServiceCreatorCallback callback)
+            ServiceCreatorCallback callback)
         {
             container.AddService(typeof(TService), callback);
         }
@@ -53,7 +66,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <param name="serviceInstance">Service instance</param>
         // --------------------------------------------------------------------------------------------
         public static void AddService<TService>(this IServiceContainer container,
-          TService serviceInstance)
+            TService serviceInstance)
         {
             container.AddService(typeof(TService), serviceInstance);
         }
@@ -70,7 +83,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// </param>
         // --------------------------------------------------------------------------------------------
         public static void AddService<TService>(this IServiceContainer container,
-          TService serviceInstance, bool promote)
+            TService serviceInstance, bool promote)
         {
             container.AddService(typeof(TService), serviceInstance, promote);
         }
@@ -87,7 +100,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// </param>
         // --------------------------------------------------------------------------------------------
         public static void AddService<TService>(this IServiceContainer container,
-          ServiceCreatorCallback callback, bool promote)
+            ServiceCreatorCallback callback, bool promote)
         {
             container.AddService(typeof(TService), callback, promote);
         }
@@ -102,7 +115,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <returns>Enumerated attributes.</returns>
         // --------------------------------------------------------------------------------------------
         public static IEnumerable<TAttr> AttributesOfType<TAttr>(this Type type, bool inherit)
-          where TAttr : Attribute
+            where TAttr : Attribute
         {
             foreach (Attribute attr in type.GetCustomAttributes(typeof(TAttr), inherit))
             {
@@ -120,7 +133,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <returns>Enumerated attributes.</returns>
         // --------------------------------------------------------------------------------------------
         public static IEnumerable<TAttr> AttributesOfType<TAttr>(this Type type)
-          where TAttr : Attribute
+            where TAttr : Attribute
         {
             foreach (Attribute attr in type.GetCustomAttributes(typeof(TAttr), false))
             {
@@ -183,8 +196,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
                 {
                     var args = type.GetGenericArguments();
                     return position >= 0 && position < args.Length
-                             ? args[position]
-                             : null;
+                        ? args[position]
+                        : null;
                 }
                 type = type.BaseType;
             }
@@ -201,12 +214,12 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <returns>Attribute if found; otherwise, null</returns>
         // --------------------------------------------------------------------------------------------
         public static TAttr GetAttribute<TAttr>(this Type type, bool inherit)
-          where TAttr : Attribute
+            where TAttr : Attribute
         {
             var attrs = type.GetCustomAttributes(typeof(TAttr), inherit);
             return attrs.Length > 0
-                     ? attrs[0] as TAttr
-                     : null;
+                ? attrs[0] as TAttr
+                : null;
         }
 
         // --------------------------------------------------------------------------------------------
@@ -218,12 +231,12 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// <returns>Attribute if found; otherwise, null</returns>
         // --------------------------------------------------------------------------------------------
         public static TAttr GetAttribute<TAttr>(this Type type)
-          where TAttr : Attribute
+            where TAttr : Attribute
         {
             var attrs = type.GetCustomAttributes(typeof(TAttr), true);
             return attrs.Length > 0
-                     ? attrs[0] as TAttr
-                     : null;
+                ? attrs[0] as TAttr
+                : null;
         }
 
         // --------------------------------------------------------------------------------------------
@@ -236,9 +249,10 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         // --------------------------------------------------------------------------------------------
         public static Type GetImplementorOfGenericInterface(this Type type, Type generic)
         {
-            return type.GetInterfaces().First(
-              t => t.IsGenericType && !t.IsGenericTypeDefinition &&
-                t.GetGenericTypeDefinition() == generic);
+            return type.GetInterfaces()
+                .First(
+                    t => t.IsGenericType && !t.IsGenericTypeDefinition &&
+                         t.GetGenericTypeDefinition() == generic);
         }
 
         // --------------------------------------------------------------------------------------------
@@ -256,7 +270,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         // --------------------------------------------------------------------------------------------
         public static TService GetService<TService>(this IServiceProvider serviceProvider)
         {
-            return (TService)serviceProvider.GetService(typeof(TService));
+            return (TService) serviceProvider.GetService(typeof(TService));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -279,9 +293,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
         /// </param>
         // --------------------------------------------------------------------------------------------
         public static TInterface GetService<SInterface, TInterface>(
-          this IServiceProvider serviceProvider)
+            this IServiceProvider serviceProvider)
         {
-            return (TInterface)serviceProvider.GetService(typeof(SInterface));
+            return (TInterface) serviceProvider.GetService(typeof(SInterface));
         }
 
         // --------------------------------------------------------------------------------------------
@@ -299,9 +313,10 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Common
             // --- We check only for generic interfaces.
             if (!generic.IsGenericTypeDefinition || !generic.IsInterface) return false;
 
-            return type.GetInterfaces().Any(
-              t => t.IsGenericType && !t.IsGenericTypeDefinition &&
-                t.GetGenericTypeDefinition() == generic);
+            return type.GetInterfaces()
+                .Any(
+                    t => t.IsGenericType && !t.IsGenericTypeDefinition &&
+                         t.GetGenericTypeDefinition() == generic);
         }
     }
 }

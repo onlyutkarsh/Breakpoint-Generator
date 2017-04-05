@@ -1,15 +1,26 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="DynamicCommand.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// // THe base class for any menu Command we are going to use in this extension. Provides basic infrastructure for menu items.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.ComponentModel.Design;
-using EnvDTE;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.ALMRangers.BreakpointGenerator.Extensions;
+using Microsoft.VisualStudio.Shell;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator.Commands.Base
 {
     public abstract class DynamicCommand : OleMenuCommand
     {
         private static IServiceProvider _serviceProvider;
-        private static DTE _dte;
         private static BreakpointGeneratorPackage _beakpointGeneratorPackage;
 
         /// <summary>
@@ -17,10 +28,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands.Base
         /// </summary>
         protected static IServiceProvider ServiceProvider
         {
-            get
-            {
-                return _serviceProvider;
-            }
+            get { return _serviceProvider; }
         }
 
         /// <summary>
@@ -30,7 +38,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands.Base
         /// <param name="onExecute">The on execute delegate.</param>
         /// <param name="id">The command id.</param>
         public DynamicCommand(IServiceProvider provider, EventHandler onExecute, CommandID id)
-           : base(onExecute, id)
+            : base(onExecute, id)
         {
             this.BeforeQueryStatus += new EventHandler(OnBeforeQueryStatus);
             _serviceProvider = provider;

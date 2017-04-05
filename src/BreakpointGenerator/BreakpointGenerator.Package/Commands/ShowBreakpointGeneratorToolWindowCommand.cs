@@ -1,16 +1,29 @@
-﻿using System;
+﻿// //———————————————————————
+// // <copyright file="ShowBreakpointGeneratorToolWindowCommand.cs">
+// // This code is licensed under the MIT License.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF 
+// // ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
+// // PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// // </copyright>
+// // <summary>
+// //  The menu command for "Show Breakpoint Generator Toolwindow" action.
+// // </summary>
+// //———————————————————————
+
+using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
-using Microsoft.ALMRangers.BreakpointGenerator.Commands.Base;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using EnvDTE;
+using Microsoft.ALMRangers.BreakpointGenerator.Commands.Base;
 using Microsoft.ALMRangers.BreakpointGenerator.Common;
 using Microsoft.ALMRangers.BreakpointGenerator.Extensions;
 using Microsoft.ALMRangers.BreakpointGenerator.ViewModels;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio;
 using VSLangProj;
 
 namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
@@ -22,7 +35,8 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
         public const uint cmdidBreakpointGenerator = 0x4121;
 
         public ShowBreakpointGeneratorToolWindowCommand(IServiceProvider serviceProvider) :
-            base(serviceProvider, OnExecute, new CommandID(typeof(ShowBreakpointGeneratorToolWindowCommand).GUID, (int)cmdidBreakpointGenerator))
+            base(serviceProvider, OnExecute,
+                new CommandID(typeof(ShowBreakpointGeneratorToolWindowCommand).GUID, (int) cmdidBreakpointGenerator))
         {
         }
 
@@ -90,7 +104,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
                     throw new COMException("Cannot create toolwindow");
                 }
 
-                IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+                IVsWindowFrame windowFrame = (IVsWindowFrame) window.Frame;
                 ErrorHandler.ThrowOnFailure(windowFrame.Show());
 
                 var viewModel = BreakpointGeneratorToolWindowViewModel.Instance;
@@ -103,7 +117,6 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
                     path = project.FullName;
                     viewModel.AnalyzeProject(VsShellHelper.Dte, path);
                     return;
-
                 }
                 var projectItem = VsShellHelper.Dte.SelectedItems.Item(1).ProjectItem;
                 if (projectItem != null)
@@ -121,10 +134,9 @@ namespace Microsoft.ALMRangers.BreakpointGenerator.Commands
                     }
 
                     //probably a folder inside the solution
-                
+
                     viewModel.AnalyzeProject(VsShellHelper.Dte, containingProject.FullName);
                     return;
-
                 }
                 //Executed at the solution level
                 var selectedHierarchy = VsShellHelper.GetSelectedHierarchy();
