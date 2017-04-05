@@ -1,17 +1,13 @@
 # Breakpoint Generator
 
-<!-- Replace this badge with your own-->
-[![Build status](https://ci.appveyor.com/api/projects/status/hv6uyc059rqbc6fj?svg=true)](https://ci.appveyor.com/project/madskristensen/extensibilitytools)
-
 <!-- Update the VS Gallery link after you upload the VSIX-->
-Download this extension from the [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=AndrewBHall-MSFT.BreakpointGenerator)
-or get the [CI build](http://vsixgallery.com/extension/d26b7824-0b3f-4a14-aaa0-0ae9853d272c/).
+Download this extension from the [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=AndrewBHall-MSFT.BreakpointGenerator).
 
 ---------------------------------------
 
 This extension enables you to generate breakpoints (and TracePoints) for any public method in your application.  This quickly allows you to learn the execution flow of new code bases and add debug time logging to your applications without the need to modify the source code.
 
-> The tool only works with C# projects
+> The extension only supports C# projects.
 
 See the [change log](CHANGELOG.md) for changes and road map.
 
@@ -36,4 +32,4 @@ Check out the [contribution guidelines](CONTRIBUTING.md)
 if you want to contribute to this project.
 
 ## License
-???
+MIT
