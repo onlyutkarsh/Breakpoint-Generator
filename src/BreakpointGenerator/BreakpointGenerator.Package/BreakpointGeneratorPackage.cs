@@ -29,6 +29,7 @@ namespace Microsoft.ALMRangers.BreakpointGenerator
     [ProvideToolWindow(typeof(BreakpointGeneratorToolWindow), MultiInstances = false, Transient = true)]
     [ProvideOptionPage(typeof(BreakpointGeneratorOptions), "Breakpoint Generator", "General", 0, 0, true)]
     [Guid("d26b7824-0b3f-4a14-aaa0-0ae9853d272c")]
+    [ProvideBindingPath]
     public sealed class BreakpointGeneratorPackage : Package
     {
         private BreakpointGeneratorToolWindow _breakpointGeneratorToolWindow;
